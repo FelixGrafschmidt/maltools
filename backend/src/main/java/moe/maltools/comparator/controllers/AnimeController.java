@@ -20,7 +20,7 @@ public class AnimeController {
 	private MalDao malDao;
 
 	@GetMapping(path = "/get-anime-for-username", params = "userName")
-	@CrossOrigin(origins = "http://localhost:8081")
+	@CrossOrigin(origins = "http://localhost:8082")
 	public Collection<Anime> getAnimeForUserName(@Param(value = "userName") String userName) {
 
 		List<Anime> animeList = new ArrayList<Anime>();
