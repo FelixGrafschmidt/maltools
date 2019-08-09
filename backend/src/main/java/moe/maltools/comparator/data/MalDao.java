@@ -34,8 +34,6 @@ public class MalDao {
 		RestTemplate restTemplate = new RestTemplate();
 		animeList = restTemplate.getForObject(url, AnimeList.class);
 
-		System.out.println(animeList);
-
 		return animeList.getAnime();
 	}
 

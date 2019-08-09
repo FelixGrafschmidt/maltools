@@ -1,7 +1,7 @@
 export default class Anime extends Object {
 	private _url: URL;
 	private _id: number;
-	private _name: String;
+	private _name: string;
 	private _imageUrl: URL;
 
 	/**
@@ -19,7 +19,7 @@ export default class Anime extends Object {
 	/**
 	 * getName
 	 */
-	public get name(): String {
+	public get name(): string {
 		return this._name;
 	}
 	/**
@@ -29,7 +29,7 @@ export default class Anime extends Object {
 		return this._imageUrl;
 	}
 
-	constructor(url: URL, id: number, name: String, imageUrl: URL) {
+	constructor(url: URL, id: number, name: string, imageUrl: URL) {
 		super();
 		this._url = url;
 		this._id = id;

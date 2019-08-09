@@ -22,43 +22,15 @@
 				</label>
 			</form>
 		</section>
-		<section style="padding-bottom: 2em;" v-if="animeList.length > 10">
-			<nav
-				class="pagination is-centered is-rounded"
-				role="navigation"
-				aria-label="pagination"
+
+		<section class="columns is-vcentered" style="height: 375px">
+			<button
+				:disabled="isFirstPage === true"
+				class="button moe-margin-left-10px"
+				@click="previousPage"
 			>
-				<pagination :data="animeList" />
-				<!-- <a
-					class="pagination-previous"
-					v-if="!isFirstPage"
-					@click="currentPage--"
-				>
-					Previous page
-				</a>
-				<a
-					class="pagination-next"
-					v-if="!isLastPage"
-					@click="currentPage++"
-				>
-					Next page
-				</a> -->
-				<!-- <paginate
-					:page-count="animeList.length / 10"
-					:clickHandler="updatePage"
-					:prev-class="'moe-pagination-previous'"
-					:next-class="'pagination-next'"
-					:active-class="'is-current'"
-					:disabled-class="'disabled'"
-					:containerClass="'pagination-list'"
-					:page-class="'pagination-link'"
-					:hide-prev-next="true"
-					:first-last-button="true"
-					v-model="currentPage"
-				/> -->
-			</nav>
-		</section>
-		<section class="columns" style="height: 375px">
+				Previous
+			</button>
 			<a
 				class="column"
 				v-for="anime in tenEntriesFromList"
@@ -75,47 +47,39 @@
 					:alt="anime.name"
 				/>
 			</a>
+			<button
+				:disabled="isLastPage === true"
+				class="button moe-margin-right-10px"
+				@click="nextPage"
+			>
+				Next
+			</button>
 		</section>
 	</section>
 </template>
 
 <script lang="ts">
 	import axios from "axios";
-	import Pagination from "@/components/Pagination.vue";
 	import { Component, Vue, Prop } from "vue-property-decorator";
 
 	import Anime from "../modules/Anime";
 
-	@Component({
-		components: {
-			Pagination
-		},
-		computed: {
-			// getCurrentPage(): number {
-			// 	return this.currentPage;
-			// },
-			// isFirstPage(): boolean {
-			// 	return this.currentPage === 1;
-			// },
-			// isLastPage(): boolean {
-			// 	return this.currentPage * 10 >= this.animeList.length;
-			// }
-		}
-	})
+	@Component({})
 	export default class AnimeList extends Vue {
 		@Prop(String)
-		userName!: String;
+		incomingUserName: string = "Ithambar";
 
 		animeList: Array<Anime> = new Array<Anime>();
 		currentPage: number = 1;
+		userName: string = "";
 		updateAnimeList(): void {
 			const userNameInput = this.$refs.userNameInput as HTMLInputElement;
-			const userName = userNameInput.value;
+			this.userName = userNameInput.value;
 
 			axios
 				.get<Array<Anime>>("http://localhost:8081/get-anime-for-username", {
 					params: {
-						userName: userName
+						userName: this.userName
 					}
 				})
 				.then(response => {
@@ -130,8 +94,28 @@
 			const start = (this.currentPage - 1) * 10;
 			return this.animeList.slice(start, start + 10);
 		}
+		get isFirstPage(): boolean {
+			return this.currentPage === 1;
+		}
+		get isLastPage(): boolean {
+			return this.currentPage * 10 >= this.animeList.length;
+		}
+		previousPage(): void {
+			this.currentPage--;
+		}
+		nextPage(): void {
+			this.currentPage++;
+		}
 		updatePage(page: number): void {
 			this.currentPage = page;
+		}
+		mounted() {
+			if (this.incomingUserName !== "") {
+				this.userName = this.incomingUserName;
+				const userNameInput = this.$refs.userNameInput as HTMLInputElement;
+				userNameInput.value = this.userName;
+				this.updateAnimeList();
+			}
 		}
 	}
 </script>
@@ -142,16 +126,10 @@
 		max-width: 100%;
 		height: auto;
 	}
-	.moe-pagination-first {
-		order: -2;
+	.moe-margin-left-10px {
+		margin-left: 10px;
 	}
-	.moe-pagination-last {
-		order: 100;
-	}
-	.moe-pagination-previous {
-		order: -1;
-	}
-	.moe-pagination-next {
-		order: 10;
+	.moe-margin-right-10px {
+		margin-right: 10px;
 	}
 </style>
