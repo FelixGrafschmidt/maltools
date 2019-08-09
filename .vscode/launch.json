@@ -12,10 +12,23 @@
 		},
 		{
 			"type": "java",
-			"name": "Debug (Launch)-ComparatorApplication<maltools>",
+			"name": "SpringBoot",
 			"request": "launch",
 			"mainClass": "moe.maltools.comparator.ComparatorApplication",
 			"projectName": "maltools"
+		},
+		{
+			"type": "chrome",
+			"request": "launch",
+			"name": "Vue",
+			"url": "http://localhost:8082",
+			"webRoot": "${workspaceFolder}/frontend"
+		}
+	],
+	"compounds": [
+		{
+			"name": "Server/Client",
+			"configurations": ["SpringBoot", "Vue"]
 		}
 	]
 }
