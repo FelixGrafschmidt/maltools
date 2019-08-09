@@ -23,37 +23,20 @@
 			</form>
 		</section>
 
-		<section class="columns is-vcentered" style="height: 375px">
-			<button
-				:disabled="isFirstPage === true"
-				class="button moe-margin-left-10px"
-				@click="previousPage"
-			>
-				Previous
-			</button>
-			<a
-				class="column"
-				v-for="anime in tenEntriesFromList"
-				:href="anime.url"
-				target="_blank"
-				:key="anime.id"
-			>
-				<h3 style="height: 70px;" class="title is-6">
-					{{ anime.name }}
-				</h3>
-				<img
-					class="moe-image"
-					:src="anime.imageUrl"
-					:alt="anime.name"
-				/>
-			</a>
-			<button
-				:disabled="isLastPage === true"
-				class="button moe-margin-right-10px"
-				@click="nextPage"
-			>
-				Next
-			</button>
+		<section>
+			<div class="container">
+				<!-- Start Carousel -->
+				<div ref="carousel" class="carousel">
+					<div
+						:class="'item-' + anime.count"
+						v-for="anime in animeList"
+						:key="anime.count"
+					>
+						<img :src="anime.imageUrl" />
+					</div>
+				</div>
+				<!-- End Carousel -->
+			</div>
 		</section>
 	</section>
 </template>
@@ -61,10 +44,15 @@
 <script lang="ts">
 	import axios from "axios";
 	import { Component, Vue, Prop } from "vue-property-decorator";
+	import carousel from "bulma-carousel";
 
 	import Anime from "../modules/Anime";
 
-	@Component({})
+	@Component({
+		components: {
+			carousel
+		}
+	})
 	export default class AnimeList extends Vue {
 		@Prop(String)
 		incomingUserName: string = "Ithambar";
@@ -84,7 +72,21 @@
 				})
 				.then(response => {
 					const { data } = response;
-					this.animeList = data;
+					this.animeList = new Array<Anime>();
+					data.forEach((anime, count) => {
+						const newAnime: Anime = new Anime(
+							anime.url,
+							anime.id,
+							anime.name,
+							anime.imageUrl,
+							count
+						);
+						this.animeList.push(newAnime);
+					});
+					carousel.attach(this.$refs.carousel[0], {
+						slidesToScroll: 1,
+						slidesToShow: 4
+					});
 				})
 				.catch(error => {
 					console.log(error);

@@ -2,6 +2,7 @@ package moe.maltools.comparator.data;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,6 +18,7 @@ public class MalDao {
 
 	private static final String BASEURL = "https://api.jikan.moe/v3";
 
+	@Cacheable
 	public User getUser(String userName) {
 		User user = new User();
 
@@ -26,6 +28,7 @@ public class MalDao {
 		return user;
 	}
 
+	@Cacheable
 	public List<Anime> getUserAnimeList(String userName) {
 		AnimeList animeList = new AnimeList();
 
