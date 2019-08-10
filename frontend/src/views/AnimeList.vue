@@ -28,9 +28,9 @@
 				<!-- Start Carousel -->
 				<div ref="carousel" class="carousel">
 					<div
-						:class="'item-' + anime.count"
-						v-for="anime in animeList"
-						:key="anime.count"
+						:class="'item-' + count"
+						v-for="(anime, count) in animeList"
+						:key="count"
 					>
 						<img :src="anime.imageUrl" />
 					</div>
@@ -57,7 +57,16 @@
 		@Prop(String)
 		incomingUserName: string = "Ithambar";
 
-		animeList: Array<Anime> = new Array<Anime>();
+		_animeList: Array<Anime> = new Array<Anime>();
+		get animeList(): Array<Anime> {
+			console.log(this._animeList);
+			return this._animeList;
+		}
+		set animeList(animeList: Array<Anime>) {
+			console.log(this.animeList);
+			this._animeList = animeList;
+			console.log(this.animeList);
+		}
 		currentPage: number = 1;
 		userName: string = "";
 		updateAnimeList(): void {
@@ -72,21 +81,21 @@
 				})
 				.then(response => {
 					const { data } = response;
-					this.animeList = new Array<Anime>();
-					data.forEach((anime, count) => {
-						const newAnime: Anime = new Anime(
-							anime.url,
-							anime.id,
-							anime.name,
-							anime.imageUrl,
-							count
-						);
-						this.animeList.push(newAnime);
-					});
-					carousel.attach(this.$refs.carousel[0], {
-						slidesToScroll: 1,
-						slidesToShow: 4
-					});
+					console.log(data);
+					this._animeList = data;
+					console.log(this._animeList);
+					// console.log(this.animeList);
+					// data.forEach((anime, count) => {
+					// 	const newAnime: Anime = new Anime(
+					// 		anime.url,
+					// 		anime.id,
+					// 		anime.name,
+					// 		anime.imageUrl,
+					// 		count
+					// 	);
+					// 	console.log(this.animeList);
+					// 	this.animeList.push(newAnime);
+					// });
 				})
 				.catch(error => {
 					console.log(error);
@@ -118,6 +127,10 @@
 				userNameInput.value = this.userName;
 				this.updateAnimeList();
 			}
+			carousel.attach(this.$refs.carousel, {
+				slidesToScroll: 1,
+				slidesToShow: 4
+			});
 		}
 	}
 </script>
