@@ -1,4 +1,1 @@
-mvn sonar:sonar \
-  -Dsonar.projectKey=moe.maltools.compare.backend \
-  -Dsonar.host.url=http://localhost:9000 \
-  -Dsonar.login=c366a701ca0ac975fc77f988aa84fb025efd87da
+mvn sonar:sonar   -Dsonar.projectKey=maltools-backend   -Dsonar.host.url=http://localhost:9000   -Dsonar.login=30596c97632125128b0083e0adb900809e1b4edb

@@ -1,0 +1,1 @@
+sonar-scanner.bat -D"sonar.projectKey=maltools-frontend" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.login=8b358f24c0313836d98c0a79ccf65bb135fba3f8"

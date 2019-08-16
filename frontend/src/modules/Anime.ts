@@ -3,13 +3,6 @@ export default class Anime extends Object {
 	private _id: number;
 	private _name: string;
 	private _imageUrl: URL;
-	private _count: number;
-	public get count(): number {
-		return this._count;
-	}
-	public set count(value: number) {
-		this._count = value;
-	}
 
 	/**
 	 * getUrl
@@ -41,13 +34,11 @@ export default class Anime extends Object {
 		id: number,
 		name: string,
 		imageUrl: URL,
-		count: number,
 	) {
 		super();
 		this._url = url;
 		this._id = id;
 		this._name = name;
 		this._imageUrl = imageUrl;
-		this._count = count;
 	}
 }

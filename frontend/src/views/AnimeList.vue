@@ -14,7 +14,7 @@
 						<button
 							class="button level-left is-rounded is-right control"
 							type="submit"
-							@click.prevent="updateAnimeList()"
+							@click.prevent="updateAnimeList"
 						>
 							Show my list
 						</button>
@@ -59,47 +59,34 @@
 
 		_animeList: Array<Anime> = new Array<Anime>();
 		get animeList(): Array<Anime> {
-			console.log(this._animeList);
 			return this._animeList;
 		}
 		set animeList(animeList: Array<Anime>) {
-			console.log(this.animeList);
 			this._animeList = animeList;
-			console.log(this.animeList);
 		}
 		currentPage: number = 1;
 		userName: string = "";
 		updateAnimeList(): void {
 			const userNameInput = this.$refs.userNameInput as HTMLInputElement;
 			this.userName = userNameInput.value;
-
-			axios
-				.get<Array<Anime>>("http://localhost:8081/get-anime-for-username", {
-					params: {
-						userName: this.userName
-					}
-				})
+			this.newAnimeAjax(this.userName)
 				.then(response => {
 					const { data } = response;
-					console.log(data);
 					this._animeList = data;
-					console.log(this._animeList);
-					// console.log(this.animeList);
-					// data.forEach((anime, count) => {
-					// 	const newAnime: Anime = new Anime(
-					// 		anime.url,
-					// 		anime.id,
-					// 		anime.name,
-					// 		anime.imageUrl,
-					// 		count
-					// 	);
-					// 	console.log(this.animeList);
-					// 	this.animeList.push(newAnime);
-					// });
 				})
 				.catch(error => {
 					console.log(error);
 				});
+		}
+		newAnimeAjax(userName: string): Promise<any> {
+			return axios.get<Array<Anime>>(
+				"http://localhost:8081/get-anime-for-username",
+				{
+					params: {
+						userName: this.userName
+					}
+				}
+			);
 		}
 		get tenEntriesFromList(): Array<Anime> {
 			const start = (this.currentPage - 1) * 10;
@@ -127,10 +114,10 @@
 				userNameInput.value = this.userName;
 				this.updateAnimeList();
 			}
-			carousel.attach(this.$refs.carousel, {
-				slidesToScroll: 1,
-				slidesToShow: 4
-			});
+			// carousel.attach(this.$refs.carousel, {
+			// 	slidesToScroll: 1,
+			// 	slidesToShow: 4
+			// });
 		}
 	}
 </script>

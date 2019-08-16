@@ -20,7 +20,7 @@ public class MalDao {
 
 	@Cacheable
 	public User getUser(String userName) {
-		User user = new User();
+		User user;
 
 		RestTemplate restTemplate = new RestTemplate();
 		user = restTemplate.getForObject(BASEURL + "/user/" + userName, User.class);
@@ -30,7 +30,7 @@ public class MalDao {
 
 	@Cacheable
 	public List<Anime> getUserAnimeList(String userName) {
-		AnimeList animeList = new AnimeList();
+		AnimeList animeList;
 
 		String url = BASEURL + "/user/" + userName + "/animelist";
 
