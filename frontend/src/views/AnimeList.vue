@@ -32,7 +32,7 @@
 						v-for="(anime, count) in animeList"
 						:key="count"
 					>
-						<img :src="anime.imageUrl" />
+						<img :src="anime.imageUrl" :alt="anime.name" />
 					</div>
 				</div>
 				<!-- End Carousel -->
@@ -73,6 +73,7 @@
 				.then(response => {
 					const { data } = response;
 					this._animeList = data;
+					this.$forceUpdate();
 				})
 				.catch(error => {
 					console.log(error);
