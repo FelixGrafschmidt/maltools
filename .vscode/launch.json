@@ -14,6 +14,7 @@
 			"type": "java",
 			"name": "SpringBoot",
 			"request": "launch",
+			"console": "externalTerminal",
 			"mainClass": "moe.maltools.comparator.ComparatorApplication",
 			"projectName": "maltools"
 		},
@@ -28,7 +29,10 @@
 	"compounds": [
 		{
 			"name": "Server/Client",
-			"configurations": ["SpringBoot", "Vue"]
+			"configurations": [
+				"SpringBoot",
+				"Vue"
+			]
 		}
 	]
 }
