@@ -14,7 +14,7 @@
 						<button
 							class="button level-left is-rounded is-right control"
 							type="submit"
-							@click.prevent="updateAnimeList"
+							@click.prevent="initializeAnimeList"
 						>
 							Show my list
 						</button>
@@ -25,7 +25,7 @@
 
 		<section>
 			<!-- Start Carousel -->
-			<carousel :perPage="7" class="moe-carousel">
+			<carousel :perPage="7" :centerMode="true" class="moe-carousel">
 				<slide
 					v-for="anime in animeList"
 					:key="anime.name"
@@ -58,12 +58,11 @@
 	})
 	export default class AnimeList extends Vue {
 		animeList: Array<Anime> = new Array<Anime>();
-		currentPage: number = 1;
 		userName: string = "";
-		updateAnimeList(): void {
+		initializeAnimeList(): void {
 			const userNameInput = this.$refs.userNameInput as HTMLInputElement;
 			this.userName = userNameInput.value;
-			this.newAnimeAjax(this.userName)
+			this.getList(this.userName)
 				.then(response => {
 					const { data } = response;
 					this.animeList = data;
@@ -73,12 +72,12 @@
 					console.log(error);
 				});
 		}
-		newAnimeAjax(userName: string): Promise<any> {
+		getList(userName: string): Promise<any> {
 			return axios.get<Array<Anime>>(
 				"http://localhost:8081/get-anime-for-username",
 				{
 					params: {
-						userName: this.userName
+						userName: userName
 					}
 				}
 			);
